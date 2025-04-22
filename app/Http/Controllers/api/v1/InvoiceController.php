@@ -50,9 +50,9 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(Invoice $invoice)
     {
-        //
+        return new InvoiceResource($invoice);
     }
 
     /**
