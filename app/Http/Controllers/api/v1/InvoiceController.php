@@ -50,16 +50,15 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
         //
     }
 
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Invoice $invoice)
     {
         $validator = FacadesValidator::make($request->all(), [
             'user_id' => 'required',
@@ -74,8 +73,6 @@ class InvoiceController extends Controller
         }
 
         $validated = $validator->validated();
-
-        $invoice = Invoice::find($id);
 
         $updated = $invoice->update([
             'user_id' => $validated['user_id'],
@@ -94,8 +91,13 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Invoice $invoice)
     {
-        //
+        $deleted = $invoice->delete();
+
+        if ($deleted) {
+            return $this->response('Invoice deleted', 200);
+        }
+        return $this->error('Invoice not deleted', 400);
     }
 }
