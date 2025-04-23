@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Traits\HttpResponses;
 use Dotenv\Validator;
 use Illuminate\Contracts\Validation\Validator as ValidationValidator;
+use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
 use Illuminate\Validation\Validator as IlluminateValidationValidator;
@@ -18,9 +19,13 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return InvoiceResource::collection(Invoice::with('user')->get());
+        // return InvoiceResource::collection(Invoice::where([
+        //     ['value', '>', 5000],
+        //     ['paid', '=', 1],
+        // ])->with('user')->get());
+        return (new Invoice())->filter($request);
     }
 
     /**
